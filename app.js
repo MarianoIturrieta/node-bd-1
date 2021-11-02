@@ -1,15 +1,31 @@
 var createError = require('http-errors');
-var express = require('express');
+var express = require('express');  
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/admin/login');
+var adminNovedadesRouter = require('./routes/admin/novedades');
 
 var app = express();
+// functions
+
+secured = async(req, res, next) => {
+  try {
+    console.log(req.session.id_usuario);
+    if (req.session.id_usuario){
+      next();
+      }else {
+        res.redirect('/admin/login');
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/admin/login', loginRouter);
+app.use('/admin/novedades', secured, adminNovedadesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -33,11 +51,14 @@ app.use(function(req, res, next) {
 require('dotenv').config();
 
 var pool = require('./models/bd');
+const { runInNewContext } = require('vm');
 
 //consulta select
-pool.query('select nombre from empleados').then(function(resultados){
+pool.query('select usuario from usuarios').then(function(resultados){
   console.log(resultados);
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {

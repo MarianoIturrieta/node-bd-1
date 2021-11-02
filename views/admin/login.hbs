@@ -1,0 +1,22 @@
+<form class="row g-3 needs-validation" novalidate>
+  <div class="col-md-4">
+    <label for="validationCustom01" class="form-label">Usuario</label>
+    <input type="text" class="form-control" id="validationCustom01" value="usuario" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationCustom02" class="form-label">Contraseña</label>
+    <input type="password" class="form-control" id="validationCustom02" value="password" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Login</button>
+  </div>
+</form>
+
+{{#if error}}
+    <p>Usuario o Clave incorrecto</p>
+{{/if}}
